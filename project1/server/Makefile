@@ -15,7 +15,7 @@ $(TARGET): $(SOURCE)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
 
 run: $(TARGET)
-	$(TARGET)
+	$(TARGET) $(ARGS)
 
 clean:
 	rm -f $(TARGET)

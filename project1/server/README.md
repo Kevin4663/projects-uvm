@@ -36,3 +36,9 @@ Run the current program with:
 ```sh
 make run
 ```
+
+Pass arguments to the program through the `ARGS` variable:
+
+```sh
+make run ARGS="arg1 arg2 arg3 arg4"
+```
