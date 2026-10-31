@@ -49,23 +49,23 @@ From the `assignment1` directory, run:
 make
 ```
 
-This will create two executables:
+This will create two executables in the repository's `bin/` directory:
 
-- `client`
-- `server`
+- `../bin/client`
+- `../bin/server`
 
 ## Run the programs
 
 Start the server in one terminal:
 
 ```bash
-./server 8080
+../bin/server 8080
 ```
 
 Then run the client in another terminal:
 
 ```bash
-./client 127.0.0.1 8080
+../bin/client 127.0.0.1 8080
 ```
 
 When prompted, enter a message. The server will receive it and send it back to the client.

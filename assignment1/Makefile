@@ -1,15 +1,18 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -O2
-TARGETS = client server
+BIN_DIR ?= ../bin
+TARGETS = $(BIN_DIR)/client $(BIN_DIR)/server
 
 .PHONY: all clean
 
 all: $(TARGETS)
 
-client: client.c
+$(BIN_DIR)/client: client.c
+	mkdir -p $(BIN_DIR)
 	$(CC) $(CFLAGS) -o $@ $^
 
-server: server.c
+$(BIN_DIR)/server: server.c
+	mkdir -p $(BIN_DIR)
 	$(CC) $(CFLAGS) -o $@ $^
 
 clean:

@@ -18,14 +18,14 @@ Build:
 make
 
 Run:
-./getaddr <'hostname'>
+../bin/getaddr <'hostname'>
 
 Examples:
-./getaddr www.bestbuy.com
-./getaddr google.com
+../bin/getaddr www.bestbuy.com
+../bin/getaddr google.com
 
 Example output:
-./getaddr www.bestbuy.com
+../bin/getaddr www.bestbuy.com
 execution time: 34.380 milliseconds
 Official name: user-att-108-235-0-0.e5816.x.akamaiedge.net
 Aliases: www.bestbuy.com, www.bestbuy.com.edgekey.net, e5816.x.akamaiedge.net
