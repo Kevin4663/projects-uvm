@@ -1,10 +1,10 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -O2
+CFLAGS = -W -pthread -g
 TARGET = asn3
 SRC = main.c
 BIN_DIR ?= ../bin
 
-.PHONY: all clean
+.PHONY: all run clean
 
 all: $(BIN_DIR)/$(TARGET)
 
