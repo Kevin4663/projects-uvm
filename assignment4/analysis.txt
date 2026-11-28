@@ -1,0 +1,47 @@
+CSC 5250 - Assignment 4
+Concurrent HTTPS Requests Using OpenSSL
+
+Part 3: Performance Comparison
+
+Hostnames used (5 HTTPS servers):
+1. www.example.com
+2. www.google.com
+3. www.wikipedia.org
+4. www.kernel.org
+5. www.openssl.org
+
+Commands used:
+Sequential: ./https_client -s www.example.com www.google.com www.wikipedia.org www.kernel.org www.openssl.org
+Concurrent: ./https_client -c www.example.com www.google.com www.wikipedia.org www.kernel.org www.openssl.org
+
+Trial   Sequential Time (ms)   Concurrent Time (ms)
+1       618.13                 167.70
+2       543.55                 163.18
+3       1044.11                163.98
+Average 735.26                 164.95
+
+Part 3 Questions:
+
+1. Which execution mode was faster in your experiment?
+Concurrent mode was much faster in every trial. The average sequential time was 735.26 ms while the average concurrent time was 164.95 ms (about 4.46x faster).
+
+2. Why can concurrent HTTPS requests finish faster than sequential requests?
+In sequential mode, the program has to wait for each hostname's DNS lookup, TCP connection, TLS handshake, and HTTP response to completely finish before starting the next hostname. Most of that time is spent waiting on network I/O rather than using the CPU. In concurrent mode, each thread handles one hostname at the same time, so the network waiting times overlap and the total time is close to the slowest single request instead of the sum of all five requests.
+
+3. Does multithreading always guarantee better performance? Explain.
+No. Multithreading helps here because network requests are I/O-bound and spend most of their time waiting on responses from remote servers. If a task is CPU-bound or if we create too many threads, the overhead from creating threads, context switching, and memory usage can outweigh the benefit. Also, network bandwidth or rate limiting on the server side can still bottleneck performance.
+
+
+Part 4: Analysis Questions
+
+1. Why should each thread have its own SSL * connection object?
+An SSL * object stores the state for a single active TLS connection (buffers, encryption keys, sequence numbers, and handshake state) and is not thread-safe to share across multiple connections at once. If multiple threads shared the same SSL * object, they would corrupt each other's TLS records and socket state. The SSL_CTX * object only stores shared configuration and trusted CA certificates, so each thread creates its own SSL * object from ctx using SSL_new(ctx).
+
+2. What happens if one HTTPS request fails while the other threads are still running?
+Because each thread has its own socket and SSL * object and handles errors locally by printing an error message, closing its resources, and returning, a failed request only ends that one thread. It does not crash the program or stop the other worker threads from finishing their HTTPS requests. The main thread still waits for all threads with pthread_join().
+
+3. How do network latency and TLS handshakes affect the execution time?
+Before sending the HTTP GET / request, every HTTPS request requires a DNS lookup, a TCP 3-way handshake, and a TLS handshake (which takes additional round trips plus certificate verification). For small requests like GET /, network latency (round-trip time to the server) and the TLS handshake make up almost the entire execution time. In sequential mode these latencies add together for every host, whereas in concurrent mode they happen in parallel.
+
+4. What are two potential disadvantages of creating a large number of threads?
+First, each thread uses system resources such as stack memory and file descriptors/sockets, so creating too many threads at once can exhaust memory or hit OS limits. Second, having a large number of active threads causes more CPU context switching and scheduling overhead, which can actually slow the program down.
