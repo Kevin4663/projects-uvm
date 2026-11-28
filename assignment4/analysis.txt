@@ -15,15 +15,15 @@ Sequential: ./https_client -s www.example.com www.google.com www.wikipedia.org w
 Concurrent: ./https_client -c www.example.com www.google.com www.wikipedia.org www.kernel.org www.openssl.org
 
 Trial   Sequential Time (ms)   Concurrent Time (ms)
-1       618.13                 167.70
-2       543.55                 163.18
-3       1044.11                163.98
-Average 735.26                 164.95
+1       525.02                 149.61
+2       534.34                 161.82
+3       529.86                 167.64
+Average 529.74                 159.69
 
 Part 3 Questions:
 
 1. Which execution mode was faster in your experiment?
-Concurrent mode was much faster in every trial. The average sequential time was 735.26 ms while the average concurrent time was 164.95 ms (about 4.46x faster).
+Concurrent mode was much faster in every trial. The average sequential time was 529.74 ms while the average concurrent time was 159.69 ms (about 3.32x faster).
 
 2. Why can concurrent HTTPS requests finish faster than sequential requests?
 In sequential mode, the program has to wait for each hostname's DNS lookup, TCP connection, TLS handshake, and HTTP response to completely finish before starting the next hostname. Most of that time is spent waiting on network I/O rather than using the CPU. In concurrent mode, each thread handles one hostname at the same time, so the network waiting times overlap and the total time is close to the slowest single request instead of the sum of all five requests.

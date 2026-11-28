@@ -8,6 +8,7 @@ Files:
 - Makefile
 - readme.md
 - analysis.txt
+- book files/chap10.h
 
 Build:
 
@@ -29,7 +30,7 @@ Sequential mode:
 Using Makefile targets:
 make run-seq
 make run-conc
-make run ARGS="-s www.example.com www.google.com"
+make run ARGS="-s www.example.com www.google.com www.wikipedia.org"
 
 Example output:
 ../bin/https_client www.example.com www.google.com www.wikipedia.org
